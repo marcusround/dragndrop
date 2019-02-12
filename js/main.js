@@ -195,7 +195,7 @@ function touchStarted() {
         chip = chips.activeChips[i];
         if ( (chip.rotatedPosition().dist(mouseRelative) < chip.diameter /2) ) {
             heldChip = chips.activeChips.splice(i,1)[0];
-            return;
+            return false;
         }
     }
     
@@ -204,7 +204,7 @@ function touchStarted() {
         var topChip = chips.inactiveChips[chips.inactiveChips.length-1];
         if ( (topChip.positionV.dist(mouseRelative) < topChip.diameter /2) ) {
             heldChip = chips.inactiveChips.pop();  
-            return;
+            return false;
         }
     }
     
@@ -213,6 +213,8 @@ function touchStarted() {
     if ( m < wheel.diameter /2 && m > wheel.innerDiameter /2 ) {
         wheelSpring.held = true;
     }
+
+    return false;
 }
 
 function touchEnded() {
@@ -223,6 +225,8 @@ function touchEnded() {
     }
     
     wheelSpring.held = false;
+
+    return false;
 }
 
 // ================================================
