@@ -1,5 +1,9 @@
-var wedgesCount = 5;
-var chipsCount = 8;
+var categories = ["Mammals", "Reptiles", "Birds", "Fish", "Insect"]
+var start_items = ["Donkey", "Crocodile", "Eagle", "Salmon", "Grasshopper", "Mouse", "Snake", "Sparrow"]
+var items = [];
+
+var wedgesCount = categories.length;
+var chipsCount = start_items.length;
 
 var colors = ['OrangeRed', 'Gold', 'YellowGreen', 'Brown', 'MediumPurple'];
 var bg = '#00CCCC';
@@ -19,8 +23,14 @@ function setup() {
     textSize(16);
     textAlign(CENTER);
 
-    chips = new Chipstack(chipsCount);
-    chipsLeft = chipsCount;
+    // Randomise items
+    for (var i = 0, il = start_items.length; i < il; i++) {
+        n = floor(random(start_items.length));
+        item = start_items.splice(n,1);
+        items.push(item);
+    }
+
+    chips = new Chipstack(items);
 
     mouseV = createVector(0, 0);
     pmouseV = createVector(0, 0);
@@ -83,7 +93,7 @@ Wheel.prototype.draw = function() {
                     // Canvas angles are offset from arc angles by 90 degrees for some reason...
                     rotate(TAU/4 + (i+0.5) * wedgeArc);
                     
-                    text('Lorem Ipsum ' + i, 0, -width * 0.40);
+                    text(categories[i], 0, -width * 0.40);
                 pop();
             }
         pop();
@@ -93,6 +103,7 @@ Wheel.prototype.draw = function() {
         ellipse(0, 0, this.innerDiameter, this.innerDiameter);
 
         // Chips
+        chips.update();
         chips.drawInactive();
         chips.drawActive();
         if (heldChip) {
@@ -122,7 +133,7 @@ Wheel.prototype.addAngularMomentum = function (m) {
 }
 
 function Chip(t,x,y,d=125) {
-    thisText = t;
+    this.text = t;
     this.diameter = d;
     this.positionV = createVector(x, y);
     this.fill = 255;
@@ -138,12 +149,13 @@ function Chip(t,x,y,d=125) {
 
     this.spring.x.pos = this.positionV.x;
     this.spring.y.pos = this.positionV.y;
+
 }
 
 Chip.prototype.update = function() {
     this.spring.x.update();
     this.spring.y.update();
-
+    
     this.positionV.set(this.spring.x.pos, this.spring.y.pos);
 }
 
@@ -152,7 +164,7 @@ Chip.prototype.draw = function(v) {
         fill(this.fill);
         ellipse(v.x, v.y, this.diameter, this.diameter);
         fill('Black');
-        text(thisText, v.x, v.y);
+        text(this.text, v.x, v.y);
     pop();
 }
 
@@ -165,11 +177,11 @@ Chip.prototype.moveTarget = function(_x, _y) {
     this.spring.y.moveRestPosition(_y);
 }
 
-function Chipstack(n) {
+function Chipstack(arr) {
     this.inactiveChips = []
     this.activeChips = [];
-    for (var i = 0, il = n; i < il; i++) {
-        this.inactiveChips.push(new Chip('Lorem ipsum', i * -3, i * -3)); 
+    for (var i = 0, il = arr.length; i < il; i++) {
+        this.inactiveChips.push(new Chip(arr[i], i * -3, i * -3)); 
     }
 }
 
@@ -177,6 +189,12 @@ Chipstack.prototype.drawActive = function() {
     for (var i = 0, il = this.activeChips.length; i < il; i++) {
         var c = this.activeChips[i]
         c.draw(c.rotatedPosition());
+    }
+}
+
+Chipstack.prototype.update = function() {
+    for (var i = 0, il = this.activeChips.length; i < il; i++) {
+        this.activeChips[i].update();
     }
 }
 
