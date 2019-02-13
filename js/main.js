@@ -14,7 +14,7 @@ var heldChip;
 var testSpring;
 
 function setup() {
-    createCanvas(800, 450);
+    createCanvas(Math.min(windowWidth, 800), Math.min(windowWidth*450/800, 450));
     colorMode(RGB, 255);
     textSize(16);
     textAlign(CENTER);
