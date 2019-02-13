@@ -187,7 +187,7 @@ Chipstack.prototype.drawInactive = function() {
     }
 }
 
-function touchStarted() {
+function mousePressed() {
     heldChip = null;
     
     // Check if we have clicked on active chip
@@ -217,7 +217,7 @@ function touchStarted() {
     return false;
 }
 
-function touchEnded() {
+function mouseReleased() {
     if (heldChip) {
         heldChip.angularPosition = wheel.rotation;
         chips.activeChips.push(heldChip);
@@ -267,4 +267,3 @@ function Spring(mass, springConstant, damping, rest) {
         R += f;
     }
 }
-
