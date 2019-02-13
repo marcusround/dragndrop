@@ -1,3 +1,5 @@
+var version = 1615;
+
 var categories = ["Mammals", "Reptiles", "Birds", "Fish", "Insect"]
 var start_items = ["Donkey", "Crocodile", "Eagle", "Salmon", "Grasshopper", "Mouse", "Snake", "Sparrow"]
 var items = [];
@@ -15,7 +17,7 @@ var mouseV, pmouseV, mouseMovement;
 var chips;
 var heldChip;
 
-var testSpring;
+var usingTouch = false;
 
 function setup() {
     createCanvas(Math.min(windowWidth, 800), Math.min(windowWidth*450/800, 450));
@@ -67,6 +69,11 @@ function draw() {
     wheelSpring.update();
     wheel.update();
     wheel.draw();
+
+    push();
+        textSize(12);
+        text(version, 20, 15);
+    pop();
 }
 
 function Wheel(x,y) {
