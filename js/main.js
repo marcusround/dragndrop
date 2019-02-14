@@ -1,4 +1,4 @@
-var version = 1100;
+var version = 1110;
 
 var categories = ["Mammals", "Reptiles", "Birds", "Fish", "Insect"]
 var start_items = ["Donkey", "Crocodile", "Eagle", "Salmon", "Grasshopper", "Mouse", "Snake", "Sparrow"]
@@ -63,7 +63,12 @@ function draw() {
         mv = mouseMovement.copy().rotate(-mouseRelative.heading()).y;
         
         // Adjust to taste; how much wheel 'sticks' to mouse when dragging.
-        mv *= 0.01;
+        if (usingTouch) {
+            mv *= 0.1;
+        } else {
+            mv *= 0.01;
+        }
+
         mv = Math.min(0.5, mv);
         
         wheelSpring.moveRestPosition(mv);
@@ -206,6 +211,7 @@ Chip.prototype.draw = function() {
         fill(this.fill);
         ellipse(this.positionV.x, this.positionV.y, this.radius, this.radius);
         fill('Black');
+        textSize(16);
         text(this.text, this.positionV.x, this.positionV.y);
     pop();
 }
@@ -253,6 +259,16 @@ Chipstack.prototype.drawInactive = function() {
 }
 
 function mousePressed() {
+    usingTouch = false;
+    processInput();
+}
+
+function touchStarted() {
+    usingTouch = true;
+    processInput();
+}
+
+function processInput() {
     heldChip = null;
     
     // Check if we have clicked on active chip
