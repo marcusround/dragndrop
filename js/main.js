@@ -1,4 +1,4 @@
-var version = 1110;
+var version = 1129;
 
 var categories = ["Mammals", "Reptiles", "Birds", "Fish", "Insect"]
 var start_items = ["Donkey", "Crocodile", "Eagle", "Salmon", "Grasshopper", "Mouse", "Snake", "Sparrow"]
@@ -24,7 +24,7 @@ var usingTouch = false;
 var springV, pspringV;
 
 function setup() {
-    createCanvas(Math.min(windowWidth, 800), Math.min(windowWidth*450/800, 450));
+    createCanvas(Math.min(innerWidth, 800), Math.min(innerWidth*450/800, 450));
     colorMode(RGB, 255);
     textSize(16);
     textAlign(CENTER);
